@@ -1,0 +1,49 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: Graph neural network for recommendation system
+author: Maede Mohammadi
+logo: docs/images/fum-gnn-logo.png
+copyright: "2025. CC0 Licensed - Computer Science Dept., Ferdowsi University of Mashhad"
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: force
+
+exclude_patterns:
+  - README.md  # Exclude the README file from the book build
+
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_engine: xelatex
+  latex_documents:
+    targetname: Graph-Neural-Networks.tex
+
+
+
+
+# Add a bibtex file so that we can create citations
+bibtex_bibfiles:
+  - references.bib
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/Maede-mim/Graph-Neural-Networks.git  # Online location of your book
+  path_to_book: docs  # Optional path to your book, relative to the repository root
+  branch: master  # Which branch of the repository should be used when creating links (optional)
+
+# Add GitHub buttons to your book
+# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
+
+
+html:
+  show_source: true
+  use_issues_button: true
+  use_repository_button: true
+  favicon: docs/images/fum-logo.ico
+  extra_navbar: ""
+
+
+launch_buttons:
+  colab_url: "https://colab.research.google.com"

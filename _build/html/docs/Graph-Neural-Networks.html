@@ -1,0 +1,776 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Graph-Neural-Networks &#8212; Graph neural network for recommendation system</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/Graph-Neural-Networks';</script>
+    <link rel="icon" href="../_static/fum-logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Graph Neural Networks for Recommender System in Practice" href="GNN-for-recom.html" />
+    <link rel="prev" title="Introduction to the Course" href="Introduction-to-course.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="home.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/fum-gnn-logo.png" class="logo__image only-light" alt="Graph neural network for recommendation system - Home"/>
+    <script>document.write(`<img src="../_static/fum-gnn-logo.png" class="logo__image only-dark" alt="Graph neural network for recommendation system - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="home.html">
+                    Graph Neural Netwoks
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Introduction-to-course.html">Introduction to the Course</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Graph-Neural-Networks</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="GNN-for-recom.html">Graph Neural Networks for Recommender System in Practice</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Maede-mim/Graph-Neural-Networks.git/blob/master/docs/docs/Graph-Neural-Networks.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Maede-mim/Graph-Neural-Networks.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Maede-mim/Graph-Neural-Networks.git/issues/new?title=Issue%20on%20page%20%2Fdocs/Graph-Neural-Networks.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/docs/Graph-Neural-Networks.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Graph-Neural-Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Graph-Neural-Networks</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#basics-of-graph">Basics of graph</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-representation-learning">Graph Representation Learning</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-of-traditional-graph-representation">Challenges of Traditional Graph Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#traditional-graph-embedding"><strong>Traditional Graph Embedding</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modern-graph-embedding"><strong>Modern Graph Embedding</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-property-preserving-graph-representation-learning">1. Structure-Property Preserving Graph Representation Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-representation-learning-with-side-information">2. Graph Representation Learning with Side Information</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Graph Neural Networks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-neural-networks-an-introduction">Graph Neural Networks: An Introduction</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea">Core Idea</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#node-representation-update">Node Representation Update</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-convolutional-network-gcn"><strong>Graph Convolutional Network (GCN)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-attention-network-gat"><strong>Graph Attention Network (GAT)</strong></a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><img alt="" src="../_images/fum-gnn-logo.png" /></p>
+<script src="require.js"></script><section class="tex2jax_ignore mathjax_ignore" id="graph-neural-networks">
+<h1>Graph-Neural-Networks<a class="headerlink" href="#graph-neural-networks" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Graph is an expressive and powerful data structure that is widely applicable, due to its fexibility and effectiveness in modeling and representing graph structure data. It has been more and more popular in various felds, including biology,
+fnance, transportation, social network, among many others.
+Graph Neural Networks are neural architectures specifcally designed for
+graph-structured data.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="basics-of-graph">
+<h1>Basics of graph<a class="headerlink" href="#basics-of-graph" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p><strong>Graph</strong>: A graph is composed of a node set and an edge set, where nodes represent entities and edges represent the relationship between entities. The nodes and edges form the topology structure of the graph. Besides the graph structure,nodes, edges, and/or the whole graph can be associated with rich information represented as node/edge/graph features (also known as attributes or contents).
+for a molcule feature vector would contain information about atoms , for a social network attributes about a person for instans .</p></li>
+</ul>
+<p><img alt="" src="../_images/Asprin-grah.png" /></p>
+<script src="require.js"></script>
+<ul class="simple">
+<li><p><strong>Adjancy Mtaric</strong>: it tells us nodes are connected</p></li>
+</ul>
+<p><img alt="" src="../_images/Adajency_matrice.png" /></p>
+<script src="require.js"></script>
+<ul class="simple">
+<li><p><strong>Subgraph</strong>: A subgraph is a graph whose set of nodes and set of edges are all subsets of the original graph</p></li>
+<li><p><strong>Heterogeneous Graphs</strong>: Graphs are called heterogeneous if the nodes and/or edges of the graph are from different types. A typical example of heteronomous graphs is knowledge graphs where the edges are composed of different types</p></li>
+<li><p><strong>Dynamic Graph</strong>: refers to when at least one component of the
+graph data changes over time, e.g., adding or deleting nodes, adding or deleting
+edges, changing edges weights or changing node attributes, etc. If graphs are
+not dynamic, we refer to them as static graphs.</p></li>
+<li><p><strong>Undirected Graphs</strong>: In these graphs, edges are bidirectional, representing two-way relationships without any direction.</p></li>
+</ul>
+<p><img alt="" src="../_images/Undirected-graph.png" /></p>
+<script src="require.js"></script>
+<ul class="simple">
+<li><p><strong>Directed Graphs</strong>: In these graphs, edges have a direction, indicated by an arrow, showing a one-way relationship from one node to another.</p></li>
+</ul>
+<p><img alt="" src="../_images/Directed_graph.png" /></p>
+<script src="require.js"></script>
+<hr>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="graph-representation-learning">
+<h1>Graph Representation Learning<a class="headerlink" href="#graph-representation-learning" title="Link to this heading">#</a></h1>
+<p>graph representation learning aims at assigning nodes in a graph to low-dimensional representations and effectively preserving the graph structures.
+To process graph data effectively,
+the frst critical challenge is to fnd effective graph data representation, that is, how
+to represent graphs concisely so that advanced analytic tasks, such as pattern discovery, analysis, and prediction, can be conducted effciently in both time and space.</p>
+<section id="challenges-of-traditional-graph-representation">
+<h2>Challenges of Traditional Graph Representation<a class="headerlink" href="#challenges-of-traditional-graph-representation" title="Link to this heading">#</a></h2>
+<p>The traditional graph representation is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+G = (V, E)
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(V\)</span> represents the set of nodes (vertices)</p></li>
+<li><p><span class="math notranslate nohighlight">\(E\)</span> represents the set of edges</p></li>
+</ul>
+<p>This representation faces several challenges when dealing with <strong>large-scale graphs</strong> (billions of nodes), including:</p>
+<ol class="arabic simple">
+<li><p><strong>High Computational Complexity</strong>:</p>
+<ul class="simple">
+<li><p>Operations like traversals scale as <span class="math notranslate nohighlight">\(O(|V| + |E|)\)</span></p></li>
+<li><p>Storage requirements grow as <span class="math notranslate nohighlight">\(O(|V|^2)\)</span> for dense graphs</p></li>
+</ul>
+</li>
+<li><p><strong>Low Parallelizability</strong>:</p>
+<ul class="simple">
+<li><p>Many graph algorithms (e.g., DFS) have inherent sequential dependencies</p></li>
+<li><p>Poor cache locality for irregular graph structures</p></li>
+</ul>
+</li>
+<li><p><strong>Incompatibility with Machine Learning</strong>:</p>
+<ul class="simple">
+<li><p>Non-Euclidean structure requires special adaptation for DL</p></li>
+<li><p>Traditional representations don’t naturally support gradient-based optimization</p></li>
+<li><p>Difficulty in learning meaningful node/edge embeddings</p></li>
+</ul>
+</li>
+</ol>
+<p>To address these challenges, graph representation learning has emerged, which aims to encode nodes into dense, low-dimensional vectors that preserve structural information. The goals are to reconstruct the original graph from these embeddings and facilitate downstream inference tasks such as link prediction, node classification, and clustering.</p>
+</section>
+<section id="traditional-graph-embedding">
+<h2><strong>Traditional Graph Embedding</strong><a class="headerlink" href="#traditional-graph-embedding" title="Link to this heading">#</a></h2>
+</section>
+<section id="modern-graph-embedding">
+<h2><strong>Modern Graph Embedding</strong><a class="headerlink" href="#modern-graph-embedding" title="Link to this heading">#</a></h2>
+<section id="structure-property-preserving-graph-representation-learning">
+<h3>1. Structure-Property Preserving Graph Representation Learning<a class="headerlink" href="#structure-property-preserving-graph-representation-learning" title="Link to this heading">#</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    &#39;&#39;&#39; Among all the information encoded in a graph, graph structures and properties are  two crucial factors that largely affect graph inference.&#39;&#39;&#39;
+</pre></div>
+</div>
+<ul>
+<li><h4 class="rubric" id="structure-preserving-graph-representation-learning">1.1 Structure Preserving Graph Representation Learning</h4>
+</li>
+<li><h4 class="rubric" id="property-preserving-graph-representation-learning">1.2 Property Preserving Graph Representation Learning</h4>
+</li>
+</ul>
+</section>
+<section id="graph-representation-learning-with-side-information">
+<h3>2. Graph Representation Learning with Side Information<a class="headerlink" href="#graph-representation-learning-with-side-information" title="Link to this heading">#</a></h3>
+<ul>
+<li><h4 class="rubric" id="advanced-information-preserving-graph-representation-learning">2.1 Advanced Information Preserving Graph Representation Learning</h4>
+</li>
+</ul>
+</section>
+<section id="id1">
+<h3>Graph Neural Networks<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<hr>
+</section>
+</section>
+<section id="graph-neural-networks-an-introduction">
+<h2>Graph Neural Networks: An Introduction<a class="headerlink" href="#graph-neural-networks-an-introduction" title="Link to this heading">#</a></h2>
+<p>Deep learning has revolutionized AI, excelling in Euclidean data like images and sequences. However, many real-world problems involve complex structures like graphs and manifolds—seen in social networks, recommendation systems, and drug discovery—that traditional models struggle to capture. Recently, Graph Neural Networks (GNNs) have gained significant attention for effectively modeling such graph-structured data, achieving remarkable success across various fields including bioinformatics, NLP, computer vision, and urban analytics.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="core-idea">
+<h1>Core Idea<a class="headerlink" href="#core-idea" title="Link to this heading">#</a></h1>
+<section id="node-representation-update">
+<h2>Node Representation Update<a class="headerlink" href="#node-representation-update" title="Link to this heading">#</a></h2>
+<p>GNNs update node representations by aggregating features from neighbors:</p>
+<p><span class="math notranslate nohighlight">\(
+\mathbf{h}_v^{(k)} = \text{UPDATE}^{(k)} \left( \mathbf{h}_v^{(k-1)}, \; \text{AGGREGATE}^{(k)} \left( \left\{ \mathbf{h}_u^{(k-1)} : u \in \mathcal{N}(v) \right\} \right) \right)
+\)</span></p>
+<p><strong>Where:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{h}_v^{(k)}\)</span>: node embedding at layer <span class="math notranslate nohighlight">\(k\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{N}(v)\)</span>: neighbors of node <span class="math notranslate nohighlight">\(v\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{AGGREGATE}\)</span>: aggregation function (mean, sum, max)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{UPDATE}\)</span>: typically a neural network</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="graph-convolutional-network-gcn">
+<h2><strong>Graph Convolutional Network (GCN)</strong><a class="headerlink" href="#graph-convolutional-network-gcn" title="Link to this heading">#</a></h2>
+<p>The layer update rule:</p>
+<p><span class="math notranslate nohighlight">\(
+\mathbf{H}^{(k)} = \sigma \left( \tilde{\mathbf{D}}^{-\frac{1}{2}} \tilde{\mathbf{A}} \tilde{\mathbf{D}}^{-\frac{1}{2}} \mathbf{H}^{(k-1)} \mathbf{W}^{(k)} \right)
+\)</span></p>
+<p><strong>Where:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\tilde{\mathbf{A}} = \mathbf{A} + \mathbf{I}\)</span>: adjacency matrix with added self-loops</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tilde{\mathbf{D}}\)</span>: degree matrix of <span class="math notranslate nohighlight">\(\tilde{\mathbf{A}}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{W}^{(k)}\)</span>: learnable weights</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span>: activation function (e.g., ReLU)</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="graph-attention-network-gat">
+<h2><strong>Graph Attention Network (GAT)</strong><a class="headerlink" href="#graph-attention-network-gat" title="Link to this heading">#</a></h2>
+<p>Attention coefficients:</p>
+<p><span class="math notranslate nohighlight">\(
+\alpha_{uv} = \frac{
+\exp \left( \text{LeakyReLU} \left( \mathbf{a}^\top \left[ \mathbf{W} \mathbf{h}_u \; \| \; \mathbf{W} \mathbf{h}_v \right] \right) \right)
+}{
+\sum_{k \in \mathcal{N}(v)} \exp \left( \text{LeakyReLU} \left( \mathbf{a}^\top \left[ \mathbf{W} \mathbf{h}_k \; \| \; \mathbf{W} \mathbf{h}_v \right] \right) \right)
+}
+\)</span></p>
+<p><strong>Key points:</strong></p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{h}_u, \mathbf{h}_v\)</span>:</strong> Original feature vectors of nodes <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{W}\)</span>:</strong> Learnable weight matrix transforming features into a suitable space.</p></li>
+<li><p><strong>Concatenation <span class="math notranslate nohighlight">\(\left[ \mathbf{W} \mathbf{h}_u \; \| \; \mathbf{W} \mathbf{h}_v \right]\)</span>:</strong> Combines features of nodes <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{a}\)</span>:</strong> Attention vector, learned during training, projecting concatenated features into a scalar score.</p></li>
+<li><p><strong>LeakyReLU:</strong> Activation that introduces non-linearity.</p></li>
+<li><p><strong>Exponentiation <span class="math notranslate nohighlight">\(\exp()\)</span>:</strong> Converts scores into positive values.</p></li>
+<li><p><strong>Normalization (denominator):</strong> Summing over all neighbors’ exponentiated scores ensures that weights sum to 1, like a probability distribution.</p></li>
+</ul>
+<p>This process results in normalized attention weights ((\alpha_{uv})) that determine how much influence each neighboring node has during feature aggregation in GAT.</p>
+<hr class="docutils" />
+<p>Node update:</p>
+<p><span class="math notranslate nohighlight">\(
+\boxed{
+\mathbf{h}_v' = \sigma \left( \sum_{u \in \mathcal{N}(v)} \alpha_{uv} \mathbf{W} \mathbf{h}_u \right)
+}
+\)</span></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Introduction-to-course.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to the Course</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="GNN-for-recom.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Graph Neural Networks for Recommender System in Practice</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Graph-Neural-Networks</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#basics-of-graph">Basics of graph</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-representation-learning">Graph Representation Learning</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-of-traditional-graph-representation">Challenges of Traditional Graph Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#traditional-graph-embedding"><strong>Traditional Graph Embedding</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modern-graph-embedding"><strong>Modern Graph Embedding</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-property-preserving-graph-representation-learning">1. Structure-Property Preserving Graph Representation Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-representation-learning-with-side-information">2. Graph Representation Learning with Side Information</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Graph Neural Networks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-neural-networks-an-introduction">Graph Neural Networks: An Introduction</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#core-idea">Core Idea</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#node-representation-update">Node Representation Update</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-convolutional-network-gcn"><strong>Graph Convolutional Network (GCN)</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-attention-network-gat"><strong>Graph Attention Network (GAT)</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maede Mohammadi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025. CC0 Licensed - Computer Science Dept., Ferdowsi University of Mashhad.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

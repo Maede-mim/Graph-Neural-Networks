@@ -1,0 +1,815 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Causality Graph Learning with Graph Neural Networks &#8212; Graph neural network for recommendation system</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Causal-Graph-Inference/docs/Causal-graph-learning';</script>
+    <link rel="icon" href="../../_static/fum-logo.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../docs/home.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/fum-gnn-logo.png" class="logo__image only-light" alt="Graph neural network for recommendation system - Home"/>
+    <script>document.write(`<img src="../../_static/fum-gnn-logo.png" class="logo__image only-dark" alt="Graph neural network for recommendation system - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../docs/home.html">
+                    Graph Neural Netwoks
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../docs/Introduction-to-course.html">Introduction to the Course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/Graph-Neural-Networks.html">Graph-Neural-Networks</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../../docs/GNN-for-recom.html">Graph Neural Networks for Recommender System in Practice</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Maede-mim/Graph-Neural-Networks.git/blob/master/docs/Causal-Graph-Inference/docs/Causal-graph-learning.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Maede-mim/Graph-Neural-Networks.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Maede-mim/Graph-Neural-Networks.git/issues/new?title=Issue%20on%20page%20%2FCausal-Graph-Inference/docs/Causal-graph-learning.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/Causal-Graph-Inference/docs/Causal-graph-learning.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Causality Graph Learning with Graph Neural Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Causality Graph Learning with Graph Neural Networks</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#causality">Causality</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-foundation">Mathematical Foundation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-in-causality">An Example in Causality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">Applications</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-causal-models">Structural Causal Models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directed-acyclic-graph-dag">1.Directed Acyclic Graph(DAG)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-equation-model-sem">2.structural equation model (SEM)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example-estimating-treatment-effect-of-grad-school-on-income">Example: Estimating Treatment Effect of Grad School on Income</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><img alt="" src="../../_images/CausalGraphLearning.png" /></p>
+<script src="require.js"></script><section class="tex2jax_ignore mathjax_ignore" id="causality-graph-learning-with-graph-neural-networks">
+<h1>Causality Graph Learning with Graph Neural Networks<a class="headerlink" href="#causality-graph-learning-with-graph-neural-networks" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>Graph Neural Networks (GNNs) are a class of deep learning models designed to operate on graph-structured data. In the context of causality, GNNs are powerful tools for uncovering the underlying causal structures among variables, which are represented as nodes in a graph. Unlike correlation-based models, GNNs aim to model the directed relationships that signify cause-effect mechanisms.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="causality">
+<h1>Causality<a class="headerlink" href="#causality" title="Link to this heading">#</a></h1>
+<p>Before diving into mathematically representing causality, we should answer a deeper question: what is causality? Causality goes beyond correlation or statistical dependency to describe the causal connections of a system.</p>
+<p>A variable, X, can be said to cause another variable, Y, if when all confounders are adjusted, an intervention in X results in a change in Y, but an intervention in Y does not necessarily result in a change in X [1]</p>
+<div style="text-align: center;">
+  <img src="images/WHY.png" alt="Book Cover" />
+</div>
+<script src="require.js"></script>
+<div dir="rtl" markdown="1">
+<p>چرا یک موز روی صفحه نمایش وجود دارد؟
+چرا روی این ویدیوی یوتیوب کلیک کردم؟
+چرا؟
+چرا این اتفاق افتاد و علت آن چیست؟
+این اتفاق به کجا می‌رسد و چه تأثیری دارد؟</p>
+<p>از خود بپرسید: «چرا؟» — این سؤال به ما کمک می‌کند تا داستان‌ها و روایت‌هایی بسازیم که به ما در فهم جهان کمک کنند. حتی اگر گاهی این درک و استدلال یکی از قدرتمندترین ابزارهایمان در آمار باشد، اغلب از لحاظ برخورد با رابطهٔ علت و معلول ناکافی است.</p>
+<p>آنچه سعی دارم برجسته کنم، همین سوال ها و به اصطلاح  “علیت”  هستند.</p>
+<div dir="rtl" markdown="1">
+<p>علیت به رابطه‌ی سببی میان دو یا چند پدیده گفته می‌شود؛ یعنی یکی (علت) باعث بروز دیگری (معلول) می‌شود. فهمیدن علیت اهمیت دارد چون به ما کمک می‌کند تا دلایل واقعی رویدادها، تأثیرات مداخلات و راه‌های مؤثر برای بهبود وضعیت‌های مختلف را درک کنیم. بدون درک صحیح علیت، تحلیل‌های داده‌ای ممکن است گمراه‌کننده باشد و نتایج نادرستی ارائه دهند، زیرا همبستگی لزوماً نشان‌دهنده رابطه‌ی سببی نیست.</p>
+<div dir="rtl" markdown="1">
+<p>ایده علیت به ما کمک می‌کند تا رابطه بین علت و معلول را بهتر درک کنیم. روش‌های آماری سنتی در این زمینه ناکافی هستند و نیاز به رویکردهای جدید داریم.
+کتاب «کتاب چرا» نوشته یودا پرل، منبع خوبی برای درک بهتر علیت و روابط پیچیده است.</p>
+<p><img alt="" src="../../_images/THE-BOOK-OF-WHY.jpg" /></p>
+<script src="require.js"></script>
+<p>این کتاب برای عموم ارائه شده و نیز قابل دسترسی است.
+درک علل و نتایج در زندگی روزمره برای ما بسیار طبیعی است و به ما کمک می‌کند تا داستان‌ها و روایت‌هایی از دنیای اطراف بسازیم.
+سه دام آماری که می‌تواند باعث سوءتفاهم در تحلیل‌های علیت شود، شامل همبستگی‌های کاذب است. این همبستگی‌ها هیچ ارتباط علی بین دو پدیده را نشان نمی‌دهند.</p>
+<div dir="rtl" markdown="1">
+  مفهوم همبستگی و عدم همبستگی در داده‌ها اهمیت بسیاری دارد. این نکته به ما یادآوری می‌کند که همبستگی به معنای علیت نیست.   <div dir="ltr" markdown="1">
+<section id="mathematical-foundation">
+<h2>Mathematical Foundation<a class="headerlink" href="#mathematical-foundation" title="Link to this heading">#</a></h2>
+<p>Consider a causal graph ( G = (V, E) ), where ( V ) is the set of variables (nodes) and ( E ) is the set of directed causal edges. A GNN propagates and aggregates information through layers using functions like:</p>
+<p><span class="math notranslate nohighlight">\(
+h_v^{(k)} = \sigma \left( \sum_{u \in \mathcal{N}(v)} W^{(k)} h_u^{(k-1)} + b^{(k)} \right),
+\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(h_v^{(k)}\)</span> is the node <span class="math notranslate nohighlight">\(v\)</span>’s embedding at layer <span class="math notranslate nohighlight">\(k\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{N}(v)\)</span> is the neighborhood of node <span class="math notranslate nohighlight">\(v\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(W^{(k)}\)</span> are learnable weights,</p></li>
+<li><p><span class="math notranslate nohighlight">\(b^{(k)}\)</span> is a bias term,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is an activation function (e.g., ReLU).</p></li>
+</ul>
+<p>This process helps the network learn representations that reflect causal influence.</p>
+</section>
+<section id="an-example-in-causality">
+<h2>An Example in Causality<a class="headerlink" href="#an-example-in-causality" title="Link to this heading">#</a></h2>
+<p>Imagine a chain where smoking ( S ) causes lung problems ( L ), which then lead to coughing ( C ). The causal directions are ( S \to L \to C ). A GNN, trained on observational data, can learn these relationships by encoding observed correlations and adjusting accordingly to reveal the directionality consistent with causality, not just correlation.</p>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading">#</a></h2>
+<p>Using GNNs for causal graph learning allows us to:</p>
+<ul class="simple">
+<li><p>Identify direct causal relationships,</p></li>
+<li><p>Predict the effect of interventions,</p></li>
+<li><p>Understand complex cause-effect mechanisms in diverse fields like medicine, economics, and social sciences.</p></li>
+</ul>
+<p>This synergy between GNNs and causality provides a robust framework for more reliable and interpretable models beyond simple associations.</p>
+<hr>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="structural-causal-models">
+<h1>Structural Causal Models<a class="headerlink" href="#structural-causal-models" title="Link to this heading">#</a></h1>
+<p>Causality is represented mathematically via Structural Causal Models (SCMs) [5]. The two key elements of SCMs are a graph and a set of equations. More specifically, the graph is a Directed Acyclic Graphs (DAG), and  the set of equations is a Structural Equation Model (SEM).</p>
+<hr>
+<section id="directed-acyclic-graph-dag">
+<h2>1.Directed Acyclic Graph(DAG)<a class="headerlink" href="#directed-acyclic-graph-dag" title="Link to this heading">#</a></h2>
+<p>DAGs represent causal structure by showing who listens to whom or, more importantly, who doesn’t listen to whom. A DAG is a special kind of graph for which all edges are directed (information flow is in one direction) and no cycles exist (information that leaves a vertex cannot return to it). The vertices (circles) in a causal DAG represent variables and edges (arrows) represent causation, where a variable is directly caused by its parents.</p>
+<p><img alt="" src="../../_images/dag.png" /></p>
+<script src="require.js"></script></section>
+<section id="structural-equation-model-sem">
+<h2>2.structural equation model (SEM)<a class="headerlink" href="#structural-equation-model-sem" title="Link to this heading">#</a></h2>
+<p><strong>Structural Equation Model (SEM)</strong> is a statistical framework that models complex relationships between observed and latent variables through a system of simultaneous equations. It allows researchers to specify and test causal hypotheses by defining direct and indirect effects among variables. Formally, an SEM consists of a set of equations:</p>
+<p>SEMs represent relationships between variables. These equations have two peculiarities. First, equations are asymmetric, meaning equality only works in one direction. This has the implication that SEMs cannot be inverted to derive alternative SEM equations. Second, equations can be non-parametric, meaning the functional form is not known.</p>
+<p><span class="math notranslate nohighlight">\(
+\mathbf{Y} = \boldsymbol{\Lambda} \mathbf{Y} + \boldsymbol{\Gamma} \mathbf{X} + \boldsymbol{\zeta}
+\)</span>
+where:
+<span class="math notranslate nohighlight">\(
+\begin{aligned}
+&amp; \text{where:} \\
+&amp; \mathbf{Y} \text{ is a vector of endogenous (dependent) variables,} \\
+&amp; \mathbf{X} \text{ is a vector of exogenous (independent) variables,} \\
+&amp; \boldsymbol{\Lambda} \text{ is a matrix of coefficients for relationships among endogenous variables,} \\
+&amp; \boldsymbol{\Gamma} \text{ is a matrix of coefficients linking exogenous variables to endogenous ones,} \\
+&amp; \boldsymbol{\zeta} \text{ is a vector of error terms.}
+\end{aligned}
+\)</span></p>
+<p>SEM enables the analysis of direct, indirect, and total effects in a causal framework, providing a powerful approach to understanding complex causal structures in social sciences, economics, psychology, and other fields.</p>
+<p><img alt="" src="../../_images/dag-equ.png" /></p>
+<script src="require.js"></script></section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="example-estimating-treatment-effect-of-grad-school-on-income">
+<h1>Example: Estimating Treatment Effect of Grad School on Income<a class="headerlink" href="#example-estimating-treatment-effect-of-grad-school-on-income" title="Link to this heading">#</a></h1>
+<p>In this example, we will use the Microsoft DoWhy library for causal inference [3]. The goal is to estimate the causal effect of a graduate degree on making more than $50k annually. Data is obtained from the UCI machine learning repository [4]. Example code and data can be found at the <a class="reference external" href="https://github.com/Maede-mim/Causal-Graph-Learning/blob/main/docs/df_causal_inference.p">Github repo</a>.</p>
+<p>It is important to stress the starting point of all causal inference is a causal model. Here, we assume income has only two causes: age and education, where age is also a cause of education. Clearly, this simple model may be missing other important factors. We will investigate alternative models in the next post on causal discovery. For now, however, we will focus on this simplified case.</p>
+<p>First, we load libraries and data. If you do not have the libraries, check out the requirements.txt in the repo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w">  </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">econml</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dowhy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dowhy</span><span class="w"> </span><span class="kn">import</span> <span class="n">CausalModel</span>
+<span class="c1"># Load Data</span>
+<span class="n">df</span> <span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span> <span class="nb">open</span><span class="p">(</span> <span class="s2">&quot;df_causal_inference.p&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span> <span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again the first step is defining our causal model i.e. DAG. DoWhy makes it easy to create and view models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define causal model</span>
+<span class="n">model</span><span class="o">=</span><span class="n">CausalModel</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>         
+                  <span class="n">treatment</span><span class="o">=</span> <span class="s2">&quot;hasGraduateDegree&quot;</span><span class="p">,</span>         
+                  <span class="n">outcome</span><span class="o">=</span> <span class="s2">&quot;greaterThan50k&quot;</span><span class="p">,</span>         
+                  <span class="n">common_causes</span><span class="o">=</span><span class="s2">&quot;age&quot;</span><span class="p">,</span>         
+                  <span class="p">)</span>
+<span class="c1"># View model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">view_model</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/53b6ec8334345ac4d7fc4e6b81d9ea35e0e86e370a8a1e5b082e37eaca39c2a5.png" src="../../_images/53b6ec8334345ac4d7fc4e6b81d9ea35e0e86e370a8a1e5b082e37eaca39c2a5.png" />
+</div>
+</div>
+<p><img alt="" src="../../_images/example.png" /></p>
+<script src="require.js"></script><p>Next, we need an estimand. This is basically a recipe that gives us our desired causal effect. In other words, it tells us how to compute the effect of education on income.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate estimand</span>
+<span class="n">identified_estimand</span><span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">identify_effect</span><span class="p">(</span><span class="n">proceed_when_unidentifiable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">identified_estimand</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimand type: EstimandType.NONPARAMETRIC_ATE
+
+### Estimand : 1
+Estimand name: backdoor
+Estimand expression:
+         d                                 
+────────────────────(E[greaterThan50k|age])
+d[hasGraduateDegree]                       
+Estimand assumption 1, Unconfoundedness: If U→{hasGraduateDegree} and U→greaterThan50k then P(greaterThan50k|hasGraduateDegree,age,U) = P(greaterThan50k|hasGraduateDegree,age)
+
+### Estimand : 2
+Estimand name: iv
+No such variable(s) found!
+
+### Estimand : 3
+Estimand name: frontdoor
+No such variable(s) found!
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we compute the causal effect based on the estimand. Here, we use a meta-learner [5] from the EconML library, which estimates conditional average treatment effects for discrete targets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute causal effect using metalearner</span>
+<span class="n">identified_estimand_experiment</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">identify_effect</span><span class="p">(</span><span class="n">proceed_when_unidentifiable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestRegressor</span>
+<span class="n">metalearner_estimate</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">estimate_effect</span><span class="p">(</span><span class="n">identified_estimand_experiment</span><span class="p">,</span>                             <span class="n">method_name</span><span class="o">=</span><span class="s2">&quot;backdoor.econml.metalearners.TLearner&quot;</span><span class="p">,</span>
+<span class="n">confidence_intervals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="n">method_params</span><span class="o">=</span><span class="p">{</span>
+     <span class="s2">&quot;init_params&quot;</span><span class="p">:{</span><span class="s1">&#39;models&#39;</span><span class="p">:</span> <span class="n">RandomForestRegressor</span><span class="p">()},</span>
+     <span class="s2">&quot;fit_params&quot;</span><span class="p">:{}</span>
+              <span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">metalearner_estimate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*** Causal Estimate ***
+
+## Identified estimand
+Estimand type: EstimandType.NONPARAMETRIC_ATE
+
+### Estimand : 1
+Estimand name: backdoor
+Estimand expression:
+         d                                 
+────────────────────(E[greaterThan50k|age])
+d[hasGraduateDegree]                       
+Estimand assumption 1, Unconfoundedness: If U→{hasGraduateDegree} and U→greaterThan50k then P(greaterThan50k|hasGraduateDegree,age,U) = P(greaterThan50k|hasGraduateDegree,age)
+
+## Realized estimand
+b: greaterThan50k~hasGraduateDegree+age
+Target units: ate
+
+## Estimate
+Mean value: 0.20245323319979938
+Effect estimates: [[ 0.29895959]
+ [ 0.21023442]
+ [ 0.36796225]
+ ...
+ [ 0.16201323]
+ [-0.01518433]
+ [ 0.21142432]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The average causal effect is about 0.20. This can be interpreted as having a graduate degree increases your probability of making more than $50k annually by 20%. Noting this is the average effect, it is important to consider the full distribution of values to assess whether the average is representative.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print histogram of causal effects</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">metalearner_estimate</span><span class="o">.</span><span class="n">cate_estimates</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([  74.,   57.,  928., 6787., 3349., 5049., 7742., 4163.,  957.,
+          64.]),
+ array([-0.32477742, -0.22701725, -0.12925708, -0.03149691,  0.06626325,
+         0.16402342,  0.26178359,  0.35954376,  0.45730393,  0.55506409,
+         0.65282426]),
+ &lt;BarContainer object of 10 artists&gt;)
+</pre></div>
+</div>
+<img alt="../../_images/e12e5094a5488273f6afcd5e6f10146b5a4f7cd05b65aa089464f4d02bf9b39d.png" src="../../_images/e12e5094a5488273f6afcd5e6f10146b5a4f7cd05b65aa089464f4d02bf9b39d.png" />
+</div>
+</div>
+<p>The figure above shows the distribution of causal effects across samples. Clearly, the distribution is not Gaussian. Which tells us the mean is not representative of the overall distribution. Further analysis diving into cohorts based on causal effects may help uncover actionable information about “who” benefits most from a graduate degree.</p>
+<p>Regardless, solely basing a decision to go to grad school on potential income, may be an indication you don’t really want to go to grad school. 🤷🏽‍♀️</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="conclusion">
+<h1>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h1>
+<p>Causal inference is a powerful tool for answering natural questions that more traditional approaches may not resolve. Here I sketched some big ideas from causal inference and worked through a concrete example with code. As stated before, a causal model is the starting point for all causal inference. Usually, however, we don’t have a good causal model in hand. This is where causal discovery can be helpful, which is the topic of the next post.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Causal-Graph-Inference\docs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Causality Graph Learning with Graph Neural Networks</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#causality">Causality</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-foundation">Mathematical Foundation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-in-causality">An Example in Causality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">Applications</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-causal-models">Structural Causal Models</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#directed-acyclic-graph-dag">1.Directed Acyclic Graph(DAG)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-equation-model-sem">2.structural equation model (SEM)</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example-estimating-treatment-effect-of-grad-school-on-income">Example: Estimating Treatment Effect of Grad School on Income</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Maede Mohammadi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025. CC0 Licensed - Computer Science Dept., Ferdowsi University of Mashhad.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
